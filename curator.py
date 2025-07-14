@@ -1,9 +1,8 @@
 import sys
 import pdfplumber
 import json
-
+import glob
 from typing import Dict, List
-
 
 def extract_metadata(pdf_path: str) -> Dict[str, str]:
     metadata: Dict[str, str] = {}
@@ -53,17 +52,28 @@ def dump_data(data: Dict[str, str]) -> None:
         json.dump(data, output_file)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python search_pdf.py <path_to_pdf>")
-    else:
+    if len(sys.argv) == 1:
+        pdf_files = glob.glob("*.pdf")  
+        for pdf_file in pdf_files:
+            metadata = extract_metadata(pdf_file)
+            dump_data(metadata)
+            if metadata:
+                print(f"Processed {pdf_file}:")
+                for key, value in metadata.items():
+                    print(f"{key}: {value}")
+            else:
+                print(f"No matching lines found in {pdf_file}.")   
+
+    elif len(sys.argv) == 2:
         pdf_file = sys.argv[1]
         metadata = extract_metadata(pdf_file)
-
         dump_data(metadata)
-    
         if metadata:
             for key, value in metadata.items():
                 print(f"{key}: {value}") 
         else:
-            print("No matching lines found in the PDF.")
+            print("No matching lines found in the PDF.")   
+
+    else:
+        print("Usage: python curator.py <path_to_pdf> or run without arguments.")
 
