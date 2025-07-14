@@ -1,5 +1,6 @@
 import sys
 import pdfplumber
+import json
 
 from typing import Dict, List
 
@@ -47,6 +48,9 @@ def extract_metadata(pdf_path: str) -> Dict[str, str]:
     metadata["Notes"] = "\n".join(notes)
     return metadata
 
+def dump_data(data: Dict[str, str]) -> None:
+    with open('data.json', 'w') as output_file:
+        json.dump(data, output_file)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -54,6 +58,8 @@ if __name__ == "__main__":
     else:
         pdf_file = sys.argv[1]
         metadata = extract_metadata(pdf_file)
+
+        dump_data(metadata)
     
         if metadata:
             for key, value in metadata.items():
