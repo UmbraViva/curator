@@ -48,8 +48,16 @@ def extract_metadata(pdf_path: str) -> Dict[str, str]:
     return metadata
 
 def dump_data(data: Dict[str, str]) -> None:
-    with open('data.json', 'w') as output_file:
-        json.dump(data, output_file)
+    try:
+        with open('data.json', 'r') as f:
+            existing_data = json.load(f) 
+    except FileNotFoundError:
+        existing_data = []
+
+    existing_data.append(data) 
+
+    with open('data.json', 'w') as f:
+        json.dump(existing_data, f, indent=4)
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
