@@ -65,22 +65,11 @@ if __name__ == "__main__":
         for pdf_file in pdf_files:
             metadata = extract_metadata(pdf_file)
             dump_data(metadata)
-            if metadata:
-                print(f"Processed {pdf_file}:")
-                for key, value in metadata.items():
-                    print(f"{key}: {value}")
-            else:
-                print(f"No matching lines found in {pdf_file}.")   
 
     elif len(sys.argv) == 2:
         pdf_file = sys.argv[1]
         metadata = extract_metadata(pdf_file)
         dump_data(metadata)
-        if metadata:
-            for key, value in metadata.items():
-                print(f"{key}: {value}") 
-        else:
-            print("No matching lines found in the PDF.")   
 
     else:
         print("Usage: python curator.py <path_to_pdf> or run without arguments.")
